@@ -2,8 +2,8 @@
 // CONFIG
 // ═══════════════════════════════════════════════════════
 const API_URL = 'http://localhost:8000/predict';
-const CLASSES   = ['airplane','alarm clock','ant','apple','axe','bee','bicycle','bush','cactus','crown','dolphin','dragon','penguin','star','the eiffel tower'];
-const WORDS     = ['airplane','alarm clock','ant','apple','axe','bee','bicycle','bush','cactus','crown','dolphin','dragon','penguin','star','the eiffel tower'];
+const CLASSES   = ['The Eiffel Tower','airplane','alarm clock','ant','apple','axe','bee','bicycle','bush','cactus','crown','dolphin','dragon','penguin','star'];
+const WORDS     = ['The Eiffel Tower','airplane','alarm clock','ant','apple','axe','bee','bicycle','bush','cactus','crown','dolphin','dragon','penguin','star'];
 const TIMES     = [20, 15, 10]; // per life
 const PREDICT_INTERVAL = 400; // ms between predictions
 const CONFIDENCE_THRESHOLD = 85; // minimum confidence % to validate a correct guess
@@ -83,7 +83,7 @@ canvas.addEventListener('mousemove', e => {
   ctx.moveTo(last_x, last_y);
   ctx.lineTo(p.x, p.y);
   ctx.strokeStyle = '#000';
-  ctx.lineWidth = 18;
+  ctx.lineWidth = 8;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.stroke();

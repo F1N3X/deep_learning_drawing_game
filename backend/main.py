@@ -16,11 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-CLASSES = [
-    "airplane", "alarm clock", "ant", "apple", "axe",
-    "bee", "bicycle", "bush", "cactus", "crown",
-    "dolphin", "dragon", "penguin", "star", "the eiffel tower"
-]
+CLASSES = ["The Eiffel Tower","airplane", "alarm clock", "ant", "apple", "axe","bee", "bicycle", "bush", "cactus", "crown","dolphin", "dragon", "penguin", "star"]
 
 session = None
 
