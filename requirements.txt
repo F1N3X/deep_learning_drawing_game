@@ -1,3 +1,9 @@
 opencv-python
 numpy
 tqdm
+tensorboard
+torch
+torchmetrics
+scikit-learn
+matplotlib
+onnxscript
