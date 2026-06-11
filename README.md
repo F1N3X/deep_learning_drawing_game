@@ -15,7 +15,7 @@ Un jeu de dessin arcade inspiré de *Quick Draw* et *WarioWare* : dessine le mot
 ```
 .
 ├── ai/
-│   ├── dataset/                  # Images d'entraînement (ignoré par git)
+│   ├── dataset/                  # Images d'entraînement (lancer dataset_generator.py pour l'obtenir)
 │   ├── runs/                     # Logs TensorBoard
 │   ├── best_model.pt             # Poids PyTorch du meilleur modèle
 │   ├── dataset_generator.py      # Génération du dataset depuis les .ndjson
