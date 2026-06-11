@@ -1,2 +1,4 @@
 ai/dataset
 quickdraw_ndjson
+
+backend/__pycache__

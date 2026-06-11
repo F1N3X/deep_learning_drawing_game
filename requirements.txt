@@ -7,3 +7,9 @@ torchmetrics
 scikit-learn
 matplotlib
 onnxscript
+
+fastapi
+uvicorn
+onnxruntime
+pillow
+python-dotenv
