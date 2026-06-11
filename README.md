@@ -32,7 +32,7 @@ Un jeu de dessin arcade inspiré de *Quick Draw* et *WarioWare* : dessine le mot
 │   ├── index.html
 │   ├── package.json
 │   └── vite.config.js
-├── quickdraw_ndjson/             # Données brutes Quick Draw (ignoré par git)
+├── quickdraw_ndjson/             # Accessibles à https://huggingface.co/datasets/Finesx/quickdraw_ndjson
 ├── requirements.txt
 └── README.md
 ```
