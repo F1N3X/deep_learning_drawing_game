@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRAW IT!</title>
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+<div id="game">
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="lives">
+      <span class="heart" id="h1">❤️</span>
+      <span class="heart" id="h2">❤️</span>
+      <span class="heart" id="h3">❤️</span>
+    </div>
+    <div id="timer-wrap">
+      <div id="timer-bar"></div>
+      <div id="timer-text">15s</div>
+    </div>
+    <div id="score-display">SCORE: <span id="score">0</span></div>
+  </div>
+
+  <!-- Word -->
+  <div id="word-wrap">
+    <div id="word-label">DRAW THIS</div>
+    <div id="word">—</div>
+  </div>
+
+  <!-- Canvas zone -->
+  <div id="canvas-zone">
+    <div id="canvas-wrapper">
+      <canvas id="draw-canvas" width="360" height="360"></canvas>
+      <div id="canvas-border"></div>
+      <div id="active-events"></div>
+    </div>
+    <div id="event-ticker"></div>
+  </div>
+
+  <!-- Guess -->
+  <div id="guess-wrap">
+    <div id="guess-label">MODEL THINKS</div>
+    <div id="guess">...</div>
+    <div id="confidence"></div>
+  </div>
+
+  <!-- Clear -->
+</div>
+
+<script type="module" src="/src/script.js"></script>
+  <button id="clear-btn">[ CLEAR ]</button>
+
+</div>
+
+<!-- Flash -->
+<div id="flash"></div>
+
+<!-- Overlay -->
+<div id="overlay">
+  <div id="overlay-title" style="color: var(--neon-yellow)">DRAW IT!<br><span style="font-size:13px;color:#888">Quick Draw × WarioWare</span></div>
+  <div id="overlay-sub">Le modèle devine ce que tu dessines en temps réel.<br>3 vies · 15s → 10s → 5s · des events vont perturber le canvas !</div>
+  <button id="overlay-btn">START GAME</button>
+</div>
+</body>
+</html>

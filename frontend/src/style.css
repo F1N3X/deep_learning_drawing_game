@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+
+  :root {
+    --neon-yellow: #FFE600;
+    --neon-cyan:   #00F5FF;
+    --neon-pink:   #FF2D78;
+    --neon-green:  #39FF14;
+    --bg:          #0a0a0f;
+    --panel:       #12121a;
+    --border:      #2a2a40;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* scanline overlay */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  #game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+  }
+
+  /* ── HUD ── */
+  #hud {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 520px;
+    padding: 8px 0;
+  }
+
+  #lives {
+    display: flex;
+    gap: 8px;
+    font-size: 22px;
+  }
+
+  .heart { transition: transform 0.2s; }
+  .heart.lost {
+    filter: grayscale(1) opacity(0.3);
+    transform: scale(0.8);
+  }
+
+  #timer-wrap {
+    position: relative;
+    width: 160px;
+    height: 24px;
+    background: var(--border);
+    border: 2px solid var(--neon-yellow);
+    overflow: hidden;
+  }
+
+  #timer-bar {
+    height: 100%;
+    background: var(--neon-yellow);
+    transition: width 0.1s linear, background 0.3s;
+    width: 100%;
+  }
+
+  #timer-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--bg);
+    mix-blend-mode: multiply;
+    font-weight: bold;
+  }
+
+  #score-display {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--neon-cyan);
+    letter-spacing: 1px;
+  }
+
+  /* ── WORD ── */
+  #word-wrap {
+    text-align: center;
+  }
+
+  #word-label {
+    font-size: 10px;
+    color: #666;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  #word {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 22px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 20px var(--neon-yellow), 0 0 40px rgba(255,230,0,0.4);
+    letter-spacing: 2px;
+    animation: wordPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes wordPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
+  /* ── CANVAS ZONE ── */
+  #canvas-zone {
+    position: relative;
+    width: 520px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #canvas-wrapper {
+    position: relative;
+    /* events applied here via JS */
+    transition: transform 0.05s;
+  }
+
+  #canvas-wrapper canvas {
+    display: block;
+    background: #fff;
+    cursor: crosshair;
+    image-rendering: pixelated;
+  }
+
+  /* canvas border — the "signature" element: animated neon frame */
+  #canvas-border {
+    position: absolute;
+    inset: -4px;
+    border: 3px solid var(--neon-cyan);
+    box-shadow:
+      0 0 10px var(--neon-cyan),
+      inset 0 0 10px rgba(0,245,255,0.05);
+    pointer-events: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  /* overlays that pass in front */
+  .overlay-element {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    font-family: 'Press Start 2P', monospace;
+  }
+
+  /* ── GUESS AREA ── */
+  #guess-wrap {
+    text-align: center;
+    min-height: 52px;
+  }
+
+  #guess-label {
+    font-size: 9px;
+    color: #555;
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+
+  #guess {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 15px;
+    color: #aaa;
+    transition: color 0.2s, text-shadow 0.2s;
+    letter-spacing: 1px;
+  }
+
+  #guess.correct {
+    color: var(--neon-green);
+    text-shadow: 0 0 16px var(--neon-green);
+    animation: correctPulse 0.5s ease;
+  }
+
+  @keyframes correctPulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  #confidence {
+    font-size: 11px;
+    color: #444;
+    margin-top: 4px;
+    transition: color 0.3s;
+    height: 16px;
+  }
+
+  /* ── EVENTS TICKER ── */
+  #event-ticker {
+    position: absolute;
+    bottom: -28px;
+    left: 0; right: 0;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .event-badge {
+    font-size: 8px;
+    padding: 3px 8px;
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    text-shadow: 0 0 6px var(--neon-pink);
+    border-radius: 2px;
+    animation: badgePop 0.3s ease;
+  }
+
+  @keyframes badgePop {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── CLEAR BUTTON ── */
+  #clear-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    background: transparent;
+    color: #444;
+    border: 1px solid #333;
+    padding: 8px 18px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  #clear-btn:hover {
+    color: var(--neon-pink);
+    border-color: var(--neon-pink);
+  }
+
+  /* ── OVERLAYS ── */
+  #overlay {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: rgba(10,10,15,0.92);
+    z-index: 100;
+    gap: 24px;
+  }
+
+  #overlay.hidden { display: none; }
+
+  #overlay-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 28px;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  #overlay-sub {
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    max-width: 400px;
+    line-height: 1.8;
+  }
+
+  #overlay-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    background: var(--neon-yellow);
+    color: var(--bg);
+    border: none;
+    padding: 14px 32px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: 0 4px 0 #a89800;
+  }
+
+  #overlay-btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 0 #a89800; }
+  #overlay-btn:active { transform: translateY(2px);  box-shadow: 0 2px 0 #a89800; }
+
+  /* ── FLASH ── */
+  #flash {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  #flash.green  { background: rgba(57,255,20,0.25); }
+  #flash.red    { background: rgba(255,45,120,0.25); }
+
+  /* ── ACTIVE EVENTS COUNT ── */
+  #active-events {
+    position: absolute;
+    top: 4px; right: 4px;
+    font-size: 8px;
+    color: var(--neon-pink);
+    font-family: 'Press Start 2P', monospace;
+    opacity: 0.7;
+  }
