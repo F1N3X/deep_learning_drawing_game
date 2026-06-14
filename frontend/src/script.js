@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════════════
-const API_URL   = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000') + '/predict';
+const API_URL   = import.meta.env.VITE_BACKEND_URL + '/predict';
 const CLASSES   = ['The Eiffel Tower','airplane','alarm clock','ant','apple','axe','bee','bicycle','bush','cactus','crown','dolphin','dragon','penguin','star'];
 const WORDS     = ['The Eiffel Tower','airplane','alarm clock','ant','apple','axe','bee','bicycle','bush','cactus','crown','dolphin','dragon','penguin','star'];
 const TIMES     = [20, 15, 10]; // per life
