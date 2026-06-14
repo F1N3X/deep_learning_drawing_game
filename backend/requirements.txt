@@ -1,15 +1,5 @@
-opencv-python
-numpy
-tqdm
-tensorboard
-torch
-torchmetrics
-scikit-learn
-matplotlib
-onnxscript
-
 fastapi
 uvicorn
+numpy
 onnxruntime
 pillow
-python-dotenv
